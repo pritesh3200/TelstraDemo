@@ -8,5 +8,6 @@
 
 import Foundation
 protocol NetworkManagerProtocol {
-    func getAllServiceData(completion: @escaping([CountryInfoModel]?, Error?) -> ())
+    func getAllServiceData(completion: @escaping([CountryInfoModel]?,String,String?) -> ())
 }
+

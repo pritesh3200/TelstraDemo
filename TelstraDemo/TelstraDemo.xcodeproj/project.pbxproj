@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		98350A832396441900DD1A08 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98350A822396441900DD1A08 /* Constant.swift */; };
+		98350A862396447500DD1A08 /* AlertViewExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98350A842396447500DD1A08 /* AlertViewExtention.swift */; };
+		98350A872396447500DD1A08 /* UIColorExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98350A852396447500DD1A08 /* UIColorExtention.swift */; };
+		98350A8A2396450B00DD1A08 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98350A892396450B00DD1A08 /* Reachability.swift */; };
 		987CD0ED238BCF13004398E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987CD0EC238BCF13004398E7 /* AppDelegate.swift */; };
 		987CD0F4238BCF3D004398E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 987CD0F3238BCF3D004398E7 /* Assets.xcassets */; };
 		987CD0F7238BCF3D004398E7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 987CD0F5238BCF3D004398E7 /* LaunchScreen.storyboard */; };
@@ -31,6 +35,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		98350A822396441900DD1A08 /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		98350A842396447500DD1A08 /* AlertViewExtention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewExtention.swift; sourceTree = "<group>"; };
+		98350A852396447500DD1A08 /* UIColorExtention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtention.swift; sourceTree = "<group>"; };
+		98350A892396450B00DD1A08 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		987CD0E9238BCF13004398E7 /* TelstraDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TelstraDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		987CD0EC238BCF13004398E7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		987CD0F3238BCF3D004398E7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -66,6 +74,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		98350A81239643EA00DD1A08 /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				98350A822396441900DD1A08 /* Constant.swift */,
+			);
+			path = Constant;
+			sourceTree = "<group>";
+		};
+		98350A88239644DC00DD1A08 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				98350A892396450B00DD1A08 /* Reachability.swift */,
+			);
+			path = Reachability;
+			sourceTree = "<group>";
+		};
 		987CD0E0238BCF13004398E7 = {
 			isa = PBXGroup;
 			children = (
@@ -87,6 +111,8 @@
 		987CD0EB238BCF13004398E7 /* TelstraDemo */ = {
 			isa = PBXGroup;
 			children = (
+				98350A88239644DC00DD1A08 /* Reachability */,
+				98350A81239643EA00DD1A08 /* Constant */,
 				98D4475D238D4CCD006A8536 /* Extention */,
 				98D4475C238D4CBC006A8536 /* TableCell */,
 				98D4475B238D4CA6006A8536 /* Model */,
@@ -164,6 +190,8 @@
 		98D4475D238D4CCD006A8536 /* Extention */ = {
 			isa = PBXGroup;
 			children = (
+				98350A842396447500DD1A08 /* AlertViewExtention.swift */,
+				98350A852396447500DD1A08 /* UIColorExtention.swift */,
 				98D44755238D4520006A8536 /* UIImageViewExtention.swift */,
 			);
 			path = Extention;
@@ -271,10 +299,14 @@
 			files = (
 				98D44754238D3334006A8536 /* CustomeTableViewCell.swift in Sources */,
 				987CD10D238BD2AB004398E7 /* NetworkManager.swift in Sources */,
+				98350A8A2396450B00DD1A08 /* Reachability.swift in Sources */,
+				98350A862396447500DD1A08 /* AlertViewExtention.swift in Sources */,
+				98350A832396441900DD1A08 /* Constant.swift in Sources */,
 				987CD10F238BDC40004398E7 /* CountryInfoModel.swift in Sources */,
 				98D44756238D4520006A8536 /* UIImageViewExtention.swift in Sources */,
 				987CD0ED238BCF13004398E7 /* AppDelegate.swift in Sources */,
 				98D44763238E78C0006A8536 /* CanadaDataViewController.swift in Sources */,
+				98350A872396447500DD1A08 /* UIColorExtention.swift in Sources */,
 				98D4475F238E6F18006A8536 /* NetworkManagerProtocol.swift in Sources */,
 				98D44761238E78A2006A8536 /* CountryInfoViewModel.swift in Sources */,
 			);

@@ -13,38 +13,75 @@ class CanadaDataViewController: UIViewController {
     // MARK: - Declared Property
     var viewModel = CountryInfoViewModel()
     let dataTableView = UITableView()
-    let defaultCellHeight = CGFloat(100)
+    let defaultCellHeight = CGFloat(80)
     var activityIndicatorView: UIActivityIndicatorView!
+    var reachability: Reachability?
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action:
+            #selector(CanadaDataViewController.handleRefresh(_:)),
+                                 for: UIControl.Event.valueChanged)
+        refreshControl.tintColor = UIColor.Blue.SkyBlue
+        return refreshControl
+    }()
     
     // MARK: - ViewController LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.checkInternetConection()
         self.view.backgroundColor = .white
         self.setUpNavigation()
         self.dataTableView.register(CustomeTableViewCell.self, forCellReuseIdentifier: CustomeTableViewCell.cellIdentifire)
-
-        
-        viewModel.fetchDataFromNetworkLayer {
-            print("Success")
-            DispatchQueue.main.async {
-                self.dataTableView.reloadData()
-                self.activityIndicatorView.stopAnimating()
-            }
-        }
-        
+        self.fetchServiceData()
         self.setupTableView()
         self.loader()
     }
-   
+    
+    override func viewDidAppear(_ animated: Bool) {
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        let xConstraint = NSLayoutConstraint(item: activityIndicatorView, attribute: .centerX, relatedBy: .equal, toItem: self.dataTableView, attribute: .centerX, multiplier: 1, constant: 0)
+        let yConstraint = NSLayoutConstraint(item: activityIndicatorView, attribute: .centerY, relatedBy: .equal, toItem: self.dataTableView, attribute: .centerY, multiplier: 1, constant: 0)
+        NSLayoutConstraint.activate([xConstraint, yConstraint])
+    }
+    
+    // MARK : Service Call
+    fileprivate func fetchServiceData() {
+        if ((self.reachability!.connection) != .unavailable) {
+            viewModel.fetchDataFromNetworkLayer {[weak self] (title, error)  in
+                if error == nil {
+                    DispatchQueue.main.async {
+                        self?.navigationItem.title = title
+                        self?.dataTableView.reloadData()
+                        self?.activityIndicatorView.stopAnimating()
+                    }
+                }else {
+                    if let err = error {
+                        DispatchQueue.main.async {
+                            self?.activityIndicatorView.stopAnimating()
+                        }
+                        self?.presentAlert(withTitle: "Error", message: err)
+                    }
+                }
+            }
+        }else{
+            DispatchQueue.main.async {
+                self.activityIndicatorView.stopAnimating()
+            }
+            self.presentAlert(withTitle: "Error", message: CustomError.noInternetConnection.rawValue)
+        }
+    }
+    
     // MARK: - UI Set Up
-   fileprivate func setupTableView() {
+    fileprivate func setupTableView() {
         
         self.dataTableView.dataSource = self
         self.dataTableView.delegate = self
         self.dataTableView.rowHeight = UITableView.automaticDimension
         self.dataTableView.estimatedRowHeight = defaultCellHeight
         self.view.addSubview(self.dataTableView)
+        self.dataTableView.addSubview(self.refreshControl)
         
         self.dataTableView.translatesAutoresizingMaskIntoConstraints = false
         self.dataTableView.topAnchor.constraint(equalTo:view.topAnchor).isActive = true
@@ -56,21 +93,36 @@ class CanadaDataViewController: UIViewController {
         self.dataTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         self.dataTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         self.dataTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
     }
     
     fileprivate func loader() {
         let activityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.gray)
         self.activityIndicatorView = activityIndicatorView
-        self.activityIndicatorView.frame = CGRect(x: self.view.frame.width/2, y: self.view.frame.height/2, width: 20, height: 20)
         activityIndicatorView.startAnimating()
-        self.view.addSubview(activityIndicatorView)
+        self.dataTableView.addSubview(activityIndicatorView)
     }
     
-   fileprivate func setUpNavigation() {
-        navigationItem.title = "About Canada"
-        self.navigationController?.navigationBar.barTintColor = _ColorLiteralType(red: 0.2431372549, green: 0.7647058824, blue: 0.8392156863, alpha: 1)
+    fileprivate func setUpNavigation() {
+        self.navigationController?.navigationBar.barTintColor = UIColor.Blue.SkyBlue
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:_ColorLiteralType(red: 1, green: 1, blue: 1, alpha: 1)]
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:UIColor.White.CustomWhite]
+    }
+    
+    // MARK: Handle Pull To Refresh
+    @objc func handleRefresh(_ refreshControl: UIRefreshControl) {
+        self.fetchServiceData()
+        self.dataTableView.reloadData()
+        refreshControl.endRefreshing()
+    }
+    
+    // MARK: Check Internet Connection
+    fileprivate func checkInternetConection() {
+        do {
+            self.reachability = try Reachability.init()
+        }catch let err {
+            print("Error : \(err.localizedDescription)")
+        }
     }
 }
 
@@ -86,13 +138,13 @@ extension CanadaDataViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section: section)
     }
-
+    
 }
 
 // MARK: - UITableViewDelegate
 extension CanadaDataViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (viewModel.countryData?[indexPath.row].description.isEmpty)! || (viewModel.countryData?[indexPath.row].title.isEmpty)! || (viewModel.countryData?[indexPath.row].imageHref.isEmpty)!{
+        if (viewModel.countryData?[indexPath.row].description.isEmpty)! {
             return defaultCellHeight
         }
         return UITableView.automaticDimension

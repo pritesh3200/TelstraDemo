@@ -11,15 +11,19 @@ import UIKit
 
 class CountryInfoViewModel: NSObject {
     
-     // MARK: - Declared Property
+    // MARK: - Declared Property
     var networkManager = NetworkManager()
-    var countryData : [CountryInfoModel]?
+    var countryData:[CountryInfoModel]?
     
     // MARK: - Supporting functions
-    func fetchDataFromNetworkLayer(completion: @escaping ()->()) {
-        networkManager.getAllServiceData { (countryData, error) in
-            self.countryData = countryData
-            completion()
+    func fetchDataFromNetworkLayer(completion: @escaping (String,String?)->()) {
+        networkManager.getAllServiceData { [weak self] (countryData,title,error) in
+            if error == nil {
+                self?.countryData = countryData
+                completion(title,nil)
+            } else {
+                completion("", error)
+            }
         }
     }
     
@@ -29,16 +33,20 @@ class CountryInfoViewModel: NSObject {
     
     func configureCell(cell: CustomeTableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         if let title = self.countryData?[indexPath.row].title {
-            cell.titleLabel.text = title
+            if title.isEmpty {
+                cell.titleLabel.text = StaticString.ViewModel.CountryInfoViewModel.TitleEmpty
+            }else {
+                cell.titleLabel.text = title
+            }
         }
-        
         if let description = self.countryData?[indexPath.row].description {
-            cell.descriptionLabel.text = description
+            if description.isEmpty {
+                cell.descriptionLabel.text = StaticString.ViewModel.CountryInfoViewModel.DescriptionEmpty
+            }else {
+                cell.descriptionLabel.text = description
+            }
         }
-        
         cell.imageIconView.image = UIImage.init(named: CustomeTableViewCell.defaultImageName)
-        cell.imageIconView.downloaded(from: self.countryData?[indexPath.row].imageHref ?? "", loader: cell.activityIndicatorView)
+        cell.imageIconView.downloaded(from: self.countryData?[indexPath.row].imageHref ?? "", loader: cell.activityIndicator)
     }
-    
-    
 }

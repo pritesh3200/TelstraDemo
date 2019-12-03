@@ -23,7 +23,7 @@ class TelstraDemoTests: XCTestCase {
     
     func testGetServiceDataResult_CheckNil() {
         var serviceData : [CountryInfoModel]?
-        networkManager.getAllServiceData { (countryData, error) in
+        networkManager.getAllServiceData {  (countryData,title,error) in
             serviceData = countryData
             XCTAssertNil(serviceData)
         }
@@ -31,7 +31,7 @@ class TelstraDemoTests: XCTestCase {
     
     func testGetServiceParameters_CheckIfAllTitleAreNotNil() {
         var serviceData : [CountryInfoModel]?
-        networkManager.getAllServiceData { (countryData, error) in
+        networkManager.getAllServiceData { (countryData,title,error) in
             serviceData = countryData
             
             for result in serviceData ?? [] {
@@ -43,13 +43,20 @@ class TelstraDemoTests: XCTestCase {
     
     func testGetServiceParameters_CheckIfAllDescriptionAreNotNil() {
         var serviceData : [CountryInfoModel]?
-        networkManager.getAllServiceData { (countryData, error) in
+         networkManager.getAllServiceData { (countryData,title,error) in
             serviceData = countryData
             
             for result in serviceData ?? [] {
                 XCTAssertNotNil(result.description)
                 XCTAssertTrue(result.description.count > 0)
             }
+        }
+    }
+    
+    func testGetServiceParameters_CheckIfTitleIsNil() {
+        networkManager.getAllServiceData { (countryData,title,error) in
+            XCTAssertNotNil(title)
+            XCTAssertTrue(title.count > 0)
         }
     }
 
