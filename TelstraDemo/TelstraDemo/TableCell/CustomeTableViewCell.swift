@@ -43,15 +43,16 @@ class CustomeTableViewCell: UITableViewCell {
         self.contentView.addSubview(containerView)
         self.imageIconView.addSubview(activityIndicator)
         
-        imageIconView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
-        imageIconView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:ConstraintConstant.TableViewCell.ImageLeading).isActive = true
-        imageIconView.widthAnchor.constraint(equalToConstant:ConstraintConstant.TableViewCell.ImageWidth).isActive = true
-        imageIconView.heightAnchor.constraint(equalToConstant:ConstraintConstant.TableViewCell.ImageHeight).isActive = true
-        
         containerView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo:self.imageIconView.trailingAnchor, constant:ConstraintConstant.TableViewCell.ContainerViewLeading).isActive = true
         containerView.trailingAnchor.constraint(equalTo:self.contentView.trailingAnchor, constant:ConstraintConstant.TableViewCell.ContainerViewTrailing).isActive = true
         containerView.bottomAnchor.constraint(equalTo:self.contentView.bottomAnchor,constant:ConstraintConstant.TableViewCell.ContainerViewBottom).isActive = true
+        
+        imageIconView.centerYAnchor.constraint(equalTo:self.contentView.centerYAnchor).isActive = true
+        imageIconView.leadingAnchor.constraint(equalTo:self.contentView.leadingAnchor, constant:ConstraintConstant.TableViewCell.ImageLeading).isActive = true
+        imageIconView.widthAnchor.constraint(equalToConstant:ConstraintConstant.TableViewCell.ImageWidth).isActive = true
+        let heightConstraint = NSLayoutConstraint(item: self.imageIconView, attribute: .centerY, relatedBy: .equal, toItem: self.contentView, attribute: .centerY, multiplier: 1, constant: 0)
+        NSLayoutConstraint.activate([heightConstraint])
         
         titleLabel.topAnchor.constraint(equalTo:self.containerView.topAnchor).isActive = true
         titleLabel.leadingAnchor.constraint(equalTo:self.containerView.leadingAnchor).isActive = true
@@ -71,10 +72,8 @@ class CustomeTableViewCell: UITableViewCell {
     // MARK: - Declared Computed properties
     let imageIconView: UIImageView = {
         let img = UIImageView()
-        img.contentMode = .scaleAspectFill
+        img.contentMode = .scaleAspectFit
         img.translatesAutoresizingMaskIntoConstraints = false
-        img.layer.cornerRadius = imageCRadius
-        img.clipsToBounds = true
         return img
     }()
     
@@ -111,5 +110,4 @@ class CustomeTableViewCell: UITableViewCell {
         activityIndicatorView.startAnimating()
         return activityIndicatorView
     }()
-    
 }

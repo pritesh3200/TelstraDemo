@@ -144,9 +144,6 @@ extension CanadaDataViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension CanadaDataViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (viewModel.countryData?[indexPath.row].description.isEmpty)! {
-            return defaultCellHeight
-        }
         return UITableView.automaticDimension
     }
 }

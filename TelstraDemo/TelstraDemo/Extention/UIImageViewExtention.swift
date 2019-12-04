@@ -21,7 +21,6 @@ extension UIImageView {
                     DispatchQueue.main.async {
                       activityIndicator.stopAnimating()
                     }
-                    
                     return
                 }
             
